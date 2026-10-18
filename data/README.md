@@ -4,7 +4,7 @@ Everything here is git-ignored except this file. Raw exchange data is never publ
 
 ## From the earlier study's data folder (read-only, linked in `external/`)
 
-Persona rule: only the downloaded data of `/home/pramod/Projects/research/jstor/jegadeesh_and_titman/data/` is used; its code, results and processed Parquet store are not.
+Only the earlier study's downloaded raw data is used (a local copy of its `data/` folder, linked here under `external/`); its processed Parquet store, code and results are not.
 
 | Link | Points to | Contents | Counts |
 |---|---|---|---|

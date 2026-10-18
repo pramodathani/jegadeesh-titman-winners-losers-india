@@ -68,7 +68,7 @@ NSE daily bhavcopies from 1995 (including delisted shares), NSE corporate action
 
 ## Detailed results
 
-[`results/comparison.md`](results/comparison.md) sets this study beside an earlier study of the same paper made with Claude Code: the 32 long-short spreads agree to within 0.1 to 0.2 points a month (cell correlations 0.98 to 0.998), and the one visible difference, the effect of the skipped week, comes from where the gap falls in the calendar month.
+[`results/comparison.md`](results/comparison.md) sets this study beside an earlier study of the same paper ([github.com/pramodathani/jegadeesh-titman-momentum-india](https://github.com/pramodathani/jegadeesh-titman-momentum-india)): the 32 long-short spreads agree to within 0.1 to 0.2 points a month (cell correlations 0.98 to 0.998), and the one visible difference, the effect of the skipped week, comes from where the gap falls in the calendar month.
 
 [`results/summary.md`](results/summary.md) holds Table I with the paper's numbers beside India's, Tables II to IX, the headline strategies with cost sensitivity, robustness checks and the delisting stress. The CSV files in `results/` hold every number, including the net-of-cost columns and drawdowns for all 64 strategies (`table_one.csv`).
 

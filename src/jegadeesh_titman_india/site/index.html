@@ -18,7 +18,7 @@
   <h1>Returns to Buying Winners and Selling Losers in India: A Replication of Jegadeesh and Titman (1993) on NSE Shares, 2007–2026</h1>
   <p class="authors">Pramod Athani</p>
   <p class="contact"><a href="mailto:pramod.athani@gmail.com">pramod.athani@gmail.com</a> · ORCID <a href="https://orcid.org/0009-0002-0270-7045">0009-0002-0270-7045</a> · SSRN <a href="https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=13497529">13497529</a> · <a href="https://www.linkedin.com/in/pramod-athani-b65b922a/">LinkedIn</a></p>
-  <p class="affiliation">An interactive companion to the replication · <a href="https://github.com/pramodathani/jegadeesh-titman-momentum-india">code and results on GitHub</a></p>
+  <p class="affiliation">An interactive companion to the replication · <a href="https://github.com/pramodathani/jegadeesh-titman-winners-losers-india">code and results on GitHub</a></p>
   <p class="dateline">Data through <span id="data-through">…</span> · snapshot built <span id="generated">…</span></p>
 </header>
 
@@ -30,7 +30,7 @@
 
 <div class="citation-box">
   <div class="label">Suggested citation</div>
-  <p id="citation-text">Athani, P. (2026). <i>Returns to Buying Winners and Selling Losers in India: A Replication of Jegadeesh and Titman (1993) on NSE Shares, 2007–2026</i> (Version 0.1) [Interactive paper and software]. https://pramodathani.github.io/jegadeesh-titman-momentum-india/</p>
+  <p id="citation-text">Athani, P. (2026). <i>Returns to Buying Winners and Selling Losers in India: A Replication of Jegadeesh and Titman (1993) on NSE Shares, 2007–2026</i> (Version 0.1) [Interactive paper and software]. https://pramodathani.github.io/jegadeesh-titman-winners-losers-india/</p>
   <button class="button" id="copy-citation">Copy</button>
 </div>
 
@@ -156,7 +156,7 @@
 </figure>
 
 <h2 class="section" id="sec-comparison">6. Comparison with an earlier study</h2>
-<p>An earlier study of the same paper, made with Claude Code on the same NSE files, was set beside this one only after these results were final. The 32 long-short spreads agree to within 0.02 to 0.14 percentage points a month on average, with correlations of 0.98 to 0.998 across the 16 cells of each panel, and both find the same best long-only strategy (nine-month ranking, three-month holding). The one visible difference is the effect of the skipped week: it depends on where the gap falls in the calendar month. This study ranks at month ends and starts holding five sessions later; the earlier study ends the ranking window five sessions before the month end. With the second method this study's numbers agree with theirs. The full comparison is in the repository.</p>
+<p>An earlier study of the same paper on the same NSE files (<a href="https://github.com/pramodathani/jegadeesh-titman-momentum-india">github.com/pramodathani/jegadeesh-titman-momentum-india</a>) was set beside this one only after these results were final. The 32 long-short spreads agree to within 0.02 to 0.14 percentage points a month on average, with correlations of 0.98 to 0.998 across the 16 cells of each panel, and both find the same best long-only strategy (nine-month ranking, three-month holding). The one visible difference is the effect of the skipped week: it depends on where the gap falls in the calendar month. This study ranks at month ends and starts holding five sessions later; the earlier study ends the ranking window five sessions before the month end. With the second method this study's numbers agree with theirs. The full comparison is in the repository.</p>
 
 <h2 class="section" id="sec-data">7. Data, methods and caveats</h2>
 <p>Share prices come from the National Stock Exchange's daily bhavcopy files from 1995, including shares later delisted. NSE does not adjust the previous close on an ex-date, so returns are adjusted with NSE's own list of splits, bonuses, consolidations and dividends, which is reliable from 2005; daily returns below −50% or above +100% are treated as data errors and set to zero. Exchange traded funds and similar units are removed. A share is ranked in a month only if it has a return in each of the previous <i>J</i> months and traded in the last five sessions of the month. Universe A is every such share; universe B keeps the 500 with the highest median daily traded value over the previous 250 sessions that traded on at least 80% of them. The benchmark is the NIFTY 500 total return index. Alphas use the Indian 91-day Treasury bill return from the IIMA data library, available to December 2025.</p>
@@ -164,7 +164,7 @@
 
 <h2 class="section">Declarations</h2>
 <p><b>Conflicts of interest.</b> The author may hold, or may in future hold, positions in the strategies and shares discussed here. The results are historical backtests, not forecasts, and nothing on this page is investment advice. The author has no other conflicts of interest to declare.</p>
-<p><b>Data and code availability.</b> All code and the study's tables are openly available at <a href="https://github.com/pramodathani/jegadeesh-titman-momentum-india">github.com/pramodathani/jegadeesh-titman-momentum-india</a> under the MIT licence. Share prices, corporate actions and index levels come from the public archives of the National Stock Exchange of India; they are not redistributed, and the repository's scripts download them.</p>
+<p><b>Data and code availability.</b> All code and the study's tables are openly available at <a href="https://github.com/pramodathani/jegadeesh-titman-winners-losers-india">github.com/pramodathani/jegadeesh-titman-winners-losers-india</a> under the MIT licence. Share prices, corporate actions and index levels come from the public archives of the National Stock Exchange of India; they are not redistributed, and the repository's scripts download them.</p>
 <p><b>Funding.</b> This research received no external funding.</p>
 
 <h2 class="section">References</h2>

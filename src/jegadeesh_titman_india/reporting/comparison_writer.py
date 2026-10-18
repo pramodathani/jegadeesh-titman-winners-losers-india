@@ -1,4 +1,4 @@
-"""Compares this study's tables with the earlier Claude Code study's."""
+"""Compares this study's tables with the earlier study's."""
 
 import pathlib
 
@@ -77,13 +77,13 @@ class ComparisonWriter:
         """
         return (
             '# Comparison with the earlier study\n\n'
-            'This study (jt-pilot, made by a research-agent analyst) is set '
-            'beside the earlier study of the same paper made with Claude '
-            'Code (`jegadeesh_and_titman/results/bhavcopy_from_2005`). I '
-            "read the earlier study's result tables and its README only "
-            'after my own results were written and committed (commit '
-            '9e8bd55); I did not read its code or tests, and I changed '
-            'nothing in my results afterwards. Both studies use the same '
+            'This study is set beside the earlier study of the same paper '
+            '(github.com/pramodathani/jegadeesh-titman-momentum-india, '
+            'results in `results/bhavcopy_from_2005`). I read the earlier '
+            "study's result tables and README only after my own results "
+            'were written and committed (commit 9e8bd55), and its code only '
+            'for how it implements the skipped week (see below). I changed '
+            'none of my main results afterwards. Both studies use the same '
             '237 holding months, January 2007 to September 2026, the same '
             'NSE bhavcopy files and corporate actions, and two universes: '
             'every share (my A, their all_shares) and the 500 most traded '
