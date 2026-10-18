@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jegadeesh-titman-india"
+version = "0.1.0"
+description = "A replication of Jegadeesh and Titman (1993) momentum strategies for Indian shares on NSE, before and after Indian trading costs."
+readme = "README.md"
+requires-python = ">=3.14"
+license = "MIT"
+authors = [
+    { name = "Pramod Athani", email = "pramod.athani@gmail.com" },
+]
+keywords = [
+    "momentum",
+    "Jegadeesh Titman",
+    "India",
+    "NSE",
+    "replication",
+    "asset pricing",
+]
+dependencies = [
+    "numpy",
+    "pandas",
+    "pyarrow",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "ruff",
+]
+live = [
+    "tradingmachine",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jegadeesh_titman_india"]
+
+[tool.ruff]
+line-length = 80
+target-version = "py314"
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
