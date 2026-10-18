@@ -104,6 +104,10 @@ class EarningsTable:
     ) -> pd.DataFrame:
         """Computes winners minus losers announcement returns by month t.
 
+        An announcement counts for month t only if its three-day window starts
+        after the last session of the ranking month, so no window reaches
+        into the returns used for ranking.
+
         Args:
             announcements: Columns symbol and announced.
             daily_returns: Returns, sessions by shares.
@@ -125,12 +129,21 @@ class EarningsTable:
         month_index = announcements['announced'].dt.to_period('M')
         decile_values = deciles.to_numpy()
         decile_months = deciles.index
+        sessions = daily_returns.index
+        last_sessions = pd.Series(
+            np.arange(len(sessions)),
+            index=sessions.to_period('M'),
+        )
+        last_sessions = last_sessions.groupby(level=0).max()
         columns = deciles.columns.get_indexer(announcements['symbol'])
         records = []
         for month_ahead in range(1, self.horizon + 1):
             formation = month_index - month_ahead
             rows = decile_months.get_indexer(formation)
+            formation_end = last_sessions.reindex(formation).to_numpy()
+            after_formation = (positions - 2) > formation_end
             usable = (rows >= 0) & (columns >= 0) & ~np.isnan(returns)
+            usable &= after_formation
             usable_rows = np.flatnonzero(usable)
             ranked = decile_values[rows[usable_rows], columns[usable_rows]]
             for position, decile in zip(usable_rows, ranked, strict=True):
@@ -154,16 +167,24 @@ class EarningsTable:
         statistics = ReturnStatistics()
         rows_out = []
         for month_ahead in range(1, self.horizon + 1):
-            series = difference.xs(month_ahead, level='t')
-            mean, t_statistic = statistics.mean_and_t(series)
+            if month_ahead in difference.index.get_level_values('t'):
+                series = difference.xs(month_ahead, level='t')
+                mean, t_statistic = statistics.mean_and_t(series)
+                winners = int(counts.loc[month_ahead, True])
+                losers = int(counts.loc[month_ahead, False])
+            else:
+                series = pd.Series(dtype=float)
+                mean, t_statistic = float('nan'), float('nan')
+                winners = 0
+                losers = 0
             rows_out.append(
                 {
                     't': month_ahead,
                     'winners_minus_losers': mean,
                     't_statistic': t_statistic,
                     'formation_months': len(series),
-                    'winner_announcements': int(counts.loc[month_ahead, True]),
-                    'loser_announcements': int(counts.loc[month_ahead, False]),
+                    'winner_announcements': winners,
+                    'loser_announcements': losers,
                 }
             )
         return pd.DataFrame(rows_out)

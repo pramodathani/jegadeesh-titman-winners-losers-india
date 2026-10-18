@@ -91,7 +91,9 @@ class BuildDailyReturnsApplication:
 
         A symbol is a fund when any of its rows has an ISIN starting INF.
         Symbols that never show an ISIN, which are shares delisted before
-        ISINs appear in the files, are judged by name.
+        ISINs appear in the files, are judged by name. Franklin fixed-term
+        plan units and rights entitlements or partly paid shares, whose
+        symbols end in -RE, -PP or -W, are also dropped.
 
         Args:
             prices: The table from the bhavcopy reader.
@@ -111,6 +113,12 @@ class BuildDailyReturnsApplication:
         unknown = flags[~flags['has_isin']].index
         pattern = r'(?:BEES|ETF)'
         by_name = [name for name in unknown if re.search(pattern, name)]
+        units = r'^(?:FTCPOF|FTCSF)'
+        by_name += [name for name in flags.index if re.search(units, name)]
+        entitlements = r'-(?:RE|PP|W)\d*$'
+        by_name += [
+            name for name in flags.index if re.search(entitlements, name)
+        ]
         funds = sorted(set(by_isin) | set(by_name))
         folder = self.data_folder / 'derived'
         folder.mkdir(exist_ok=True)

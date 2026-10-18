@@ -10,6 +10,7 @@ from jegadeesh_titman_india.data.results_announcements import (
 )
 from jegadeesh_titman_india.momentum.calendar_tables import CalendarTables
 from jegadeesh_titman_india.momentum.decile_tables import DecileTables
+from jegadeesh_titman_india.momentum.delisting_stress import DelistingStress
 from jegadeesh_titman_india.momentum.earnings_table import EarningsTable
 from jegadeesh_titman_india.momentum.event_time import (
     EventTimeReturns,
@@ -17,6 +18,9 @@ from jegadeesh_titman_india.momentum.event_time import (
 )
 from jegadeesh_titman_india.momentum.headline_strategies import (
     HeadlineStrategies,
+)
+from jegadeesh_titman_india.momentum.robustness_checks import (
+    RobustnessChecks,
 )
 from jegadeesh_titman_india.momentum.section_three import SectionThree
 from jegadeesh_titman_india.momentum.study_inputs import StudyInputs
@@ -71,6 +75,7 @@ class RunAllTablesApplication:
         self.event_time_and_section_three()
         self.earnings()
         self.headline()
+        self.robustness()
         self.cross_check()
 
     def save(self, table: pd.DataFrame, name: str) -> None:
@@ -226,6 +231,33 @@ class RunAllTablesApplication:
         """
         table = HeadlineStrategies(self.inputs).table()
         self.save(table, 'headline_strategies')
+
+    def robustness(self) -> None:
+        """Writes the robustness checks and the delisting stress.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+
+        Raises:
+            None.
+        """
+        self.save(RobustnessChecks(self.inputs).table(), 'robustness')
+        tables = DecileTables(self.inputs)
+        frames = []
+        for universe in ('A', 'B'):
+            strategy = tables.strategy(tables.mask(universe), 100)
+            frames.append(
+                DelistingStress().table(
+                    strategy.deciles,
+                    6,
+                    self.inputs.standard_returns,
+                    universe,
+                )
+            )
+        self.save(pd.concat(frames), 'delisting_stress')
 
     def cross_check(self) -> None:
         """Writes the correlation of our series with IIMA's WML factor.

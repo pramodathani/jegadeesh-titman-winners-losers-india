@@ -121,3 +121,33 @@ class TestEarningsTable:
         assert math.isclose(table.loc[0, 'winners_minus_losers'], expected)
         assert table.loc[0, 'winner_announcements'] == 2
         assert table.loc[0, 'formation_months'] == 2
+
+    def test_window_reaching_into_the_ranking_month_is_dropped(self) -> None:
+        """Checks that a first-day announcement is not used for month one.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+
+        Raises:
+            AssertionError: When the early announcement is counted.
+        """
+        sessions = pd.bdate_range('2020-01-01', '2020-12-31')
+        returns = pd.DataFrame(
+            {'W': 0.01, 'L': -0.01},
+            index=sessions,
+        )
+        months = pd.period_range('2019-01', '2020-12', freq='M')
+        deciles = pd.DataFrame({'W': 10.0, 'L': 1.0}, index=months)
+        announcements = pd.DataFrame(
+            {
+                'symbol': ['W', 'L'],
+                'announced': pd.to_datetime(['2020-06-01 11:00'] * 2),
+            }
+        )
+        table = EarningsTable(horizon=2).table(announcements, returns, deciles)
+        assert table.loc[0, 'winner_announcements'] == 0
+        assert math.isnan(table.loc[0, 'winners_minus_losers'])
+        assert table.loc[1, 'winner_announcements'] == 1
