@@ -109,7 +109,7 @@ class BuildDailyReturnsApplication:
         )
         by_isin = flags[flags['is_fund']].index
         unknown = flags[~flags['has_isin']].index
-        pattern = r'(?:BEES|ETF|IETF|GOLD|SILVER|LIQUID|SENSEX|NIFTY|GILT)'
+        pattern = r'(?:BEES|ETF)'
         by_name = [name for name in unknown if re.search(pattern, name)]
         funds = sorted(set(by_isin) | set(by_name))
         folder = self.data_folder / 'derived'
