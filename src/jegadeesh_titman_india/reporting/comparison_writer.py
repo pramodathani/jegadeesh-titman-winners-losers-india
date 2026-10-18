@@ -54,6 +54,7 @@ class ComparisonWriter:
         parts = [
             self.opening(),
             self.table_one(),
+            self.skip_variant(),
             self.long_only(),
             self.calendar(),
             self.event_time(),
@@ -197,6 +198,88 @@ class ComparisonWriter:
         text += self.markdown.render(
             ['Universe', 'Leg', 'Mine', 'Theirs', 'Difference'],
             legs,
+        )
+        return text
+
+    def skip_variant(self) -> str:
+        """Compares the skip panel under both ways of leaving the gap.
+
+        Args:
+            None.
+
+        Returns:
+            Markdown text.
+
+        Raises:
+            None.
+        """
+        grid = pd.read_csv(self.mine / 'table_one.csv')
+        variant = pd.read_csv(self.mine / 'table_one_earlier_ranking_skip.csv')
+        rows = []
+        for mine_name, their_name in self.PAIRS:
+            theirs = self.read_theirs(f'{their_name}_table_1_all_strategies')
+            theirs = theirs[
+                (theirs['portfolio'] == 'buy_minus_sell')
+                & (theirs['skipped_days'] == 5)
+            ]
+            own = variant[variant['universe'] == mine_name]
+            joined = own.merge(
+                theirs,
+                left_on=['J', 'K'],
+                right_on=['ranking_months', 'holding_months'],
+            )
+            main_skip = grid[(grid['universe'] == mine_name) & (grid['skip'])][
+                'bs_mean'
+            ].mean()
+            no_skip = grid[(grid['universe'] == mine_name) & (~grid['skip'])][
+                'bs_mean'
+            ].mean()
+            rows.append(
+                [
+                    f'{mine_name} vs {their_name}',
+                    self.markdown.percent(no_skip, 3),
+                    self.markdown.percent(main_skip, 3),
+                    self.markdown.percent(joined['mean_x'].mean(), 3),
+                    self.markdown.percent(joined['mean_y'].mean(), 3),
+                    self.markdown.number(
+                        joined['mean_x'].corr(joined['mean_y']), 3
+                    ),
+                ]
+            )
+        text = '\n## The skipped week\n\n'
+        text += (
+            'My main skip panel ranks at the calendar month end and starts '
+            "holding five sessions later. After reading the earlier study's "
+            'code for this one point, I found that it instead ends the '
+            'ranking window five sessions before the month end and holds '
+            'calendar months. Both leave five sessions between the end of '
+            'the ranking window and the first day of holding, but the '
+            'skipped week falls in different parts of the calendar month. '
+            'I added the second way as an extra check (`table_one_earlier_'
+            'ranking_skip.csv`, run after seeing the comparison; it does '
+            "not replace the plan's version). Average of the 16 "
+            'buy-minus-sell means:\n\n'
+        )
+        text += self.markdown.render(
+            [
+                'Universe',
+                'Mine, no skip',
+                'Mine, skip after ranking (main)',
+                'Mine, ranking window ended early',
+                'Theirs, skip',
+                'Correlation of the 16 cells, early ending vs theirs',
+            ],
+            rows,
+        )
+        text += (
+            '\nWith their way of leaving the gap my results agree with '
+            'theirs; with mine the gap raises the spread by 0.16 points a '
+            "month in universe A. So the paper's finding that a skipped "
+            'week raises returns holds or fails in India depending on where '
+            "in the calendar month the week falls, and neither study's "
+            'statement about the skip is wrong. The "does not help" '
+            'conclusion in the earlier README belongs to its way of leaving '
+            'the gap.\n'
         )
         return text
 
@@ -439,34 +522,43 @@ class ComparisonWriter:
             '\n## What differs between the studies\n\n'
             "Taken from the earlier study's README and result files, and "
             'from my own plan:\n\n'
-            '- **Data start.** Theirs starts on 2005-01-03; mine uses 1995 '
-            'bhavcopies, so my ranking inputs for early 2007 have the same '
-            'depth but my early sample (1997-2006) exists and theirs does '
-            'not.\n'
+            '- **Data start.** Theirs starts on 2005-01-03; mine uses '
+            'bhavcopies from 1995, which only adds an early sample '
+            '(1997-2006) that theirs does not have; the main sample is the '
+            'same 237 months.\n'
             '- **Corporate actions.** They match each split or bonus to the '
             'trading day near its listed ex-date whose price drop fits the '
             "ratio and apply it only if it brings that day's return closer "
             'to zero. I apply each action on the first trading day on or '
-            'after its listed ex-date. Their README reports 709 returns '
-            'zeroed; mine zero 863 (1995-2026).\n'
+            'after its listed ex-date. Both set one-day returns below -50% '
+            'or above +100% to zero. Their summary reports 702 such rows '
+            '(709 in the README); I count 382 since 2005-01-03 and 863 '
+            'over 1995-2026, counted from `data/derived/data_errors.csv`. '
+            'The difference probably comes from how corporate actions are '
+            'matched and from funds, which I remove; I did not check.\n'
             '- **Funds.** I remove 521 ETF, fund and entitlement symbols by '
-            'ISIN or name; their README does not mention removing funds.\n'
+            'ISIN or name. Their README does not say whether funds are '
+            'removed, and I did not check their code for this; funds in '
+            'their universe could account for part of the small gaps in the '
+            'buy leg.\n'
             '- **Liquid universe.** Theirs ranks the previous six months of '
             'traded value; mine uses the previous 250 sessions with a '
             'minimum 80% trading share. Both keep 500 shares.\n'
             '- **Benchmark.** Theirs is the NIFTY 500 price index plus a '
             "twelfth of the month's dividend yield (a later-year average "
             "yield before July 2012); mine is NSE's NIFTY 500 total return "
-            'index, found on niftyindices.com from 1995.\n'
-            '- **Costs.** Both use brahmagupta-style Indian delivery costs '
-            'with impact of 0.1% (liquid) and 0.3% (all); theirs also '
-            'reports a fixed depository charge note.\n'
-            '- **Risk-free rate.** They use none; mine uses the IIMA 91-day '
-            'bill series to December 2025.\n'
+            'index, found on niftyindices.com from 1995. The two compound at '
+            '11.5% and 11.4% over the sample.\n'
+            '- **Costs.** Both use 2026 statutory charges and market impact '
+            'of 0.1% (liquid) and 0.3% (all). Their README notes that the '
+            'fixed depository charge is not included; mine does not model '
+            'it either.\n'
+            '- **Risk-free rate.** Their README says none is used; mine uses '
+            'the IIMA 91-day bill series to December 2025 for alphas.\n'
             '- **Paper tables.** I add Table IX (announcement returns), '
             "Section III, Table VIII's stand-in, size and beta subsamples "
             'by terciles, a delisting stress and robustness checks. They do '
             'not replicate Table IX and use liquidity terciles only.\n'
-            '- **Plain versus Newey-West t.** Their t-statistics in Table I '
-            "are ordinary ones, as the paper's appear to be; mine show both.\n"
+            '- **The skip.** See the section above: the two studies leave '
+            'the gap in different places in the calendar month.\n'
         )
