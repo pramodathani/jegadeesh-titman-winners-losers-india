@@ -74,8 +74,8 @@ class BuildDailyReturnsApplication:
         action_files = [
             path for path in action_files if path.name != '2026.json'
         ]
-        action_files.append(
-            self.data_folder / 'nse/corporate_actions/2026.json'
+        action_files += sorted(
+            (self.data_folder / 'nse/corporate_actions').glob('*.json')
         )
         actions = CorporateActionTable().load(action_files)
         print('actions', len(actions), flush=True)

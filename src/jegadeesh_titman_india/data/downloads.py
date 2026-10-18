@@ -20,12 +20,37 @@ class BhavcopyTopUp:
         'https://nsearchives.nseindia.com/content/cm/'
         'BhavCopy_NSE_CM_0_0_0_{stamp}_F_0000.csv.zip'
     )
+    OLD_URL: str = (
+        'https://nsearchives.nseindia.com/content/historical/EQUITIES/'
+        '{year}/{month}/cm{day}{month}{year}bhav.csv.zip'
+    )
+    LAST_OLD_DAY: datetime.date = datetime.date(2024, 7, 5)
+
+    def url(self, day: datetime.date) -> str:
+        """Gives the address of a day's file in the layout NSE used then.
+
+        Args:
+            day: The trading date.
+
+        Returns:
+            The old address up to 5 July 2024 and the UDiFF address after.
+
+        Raises:
+            None.
+        """
+        if day <= self.LAST_OLD_DAY:
+            return self.OLD_URL.format(
+                year=day.year,
+                month=day.strftime('%b').upper(),
+                day=day.strftime('%d'),
+            )
+        return self.URL.format(stamp=day.strftime('%Y%m%d'))
 
     def __init__(self, folder: pathlib.Path, session: NseSession) -> None:
         """Creates the downloader.
 
         Args:
-            folder: The folder for the new raw files.
+            folder: The folder for the raw files.
             session: The HTTP session.
 
         Returns:
@@ -39,6 +64,9 @@ class BhavcopyTopUp:
 
     def run(self, first: datetime.date, last: datetime.date) -> None:
         """Downloads every weekday from first to last that is not on disk.
+
+        Files go in one sub-folder per year, as the daily returns script
+        reads them.
 
         Args:
             first: The first date to try.
@@ -58,14 +86,14 @@ class BhavcopyTopUp:
         day = first
         while day <= last:
             name = day.isoformat()
-            target = self.folder / f'{name}.csv.zip'
+            year_folder = self.folder / str(day.year)
+            year_folder.mkdir(exist_ok=True)
+            target = year_folder / f'{name}.csv.zip'
             skip = day.weekday() >= 5 or target.exists()
             if name in known_missing:
                 skip = True
             if not skip:
-                response = self.session.get(
-                    self.URL.format(stamp=day.strftime('%Y%m%d'))
-                )
+                response = self.session.get(self.url(day))
                 if response.status_code == 200:
                     target.write_bytes(response.content)
                     print('saved', name, len(response.content), flush=True)
@@ -393,12 +421,20 @@ class DataDownloadApplication:
         last: The last date to fetch up to.
     """
 
-    def __init__(self, root: pathlib.Path, last: datetime.date) -> None:
+    def __init__(
+        self,
+        root: pathlib.Path,
+        last: datetime.date,
+        full_history: bool = False,
+    ) -> None:
         """Creates the application.
 
         Args:
             root: The study's data folder.
             last: The last date to fetch up to.
+            full_history: Whether to fetch every bhavcopy since 1995 and
+                every year of corporate actions, instead of only what the
+                earlier study's files lack.
 
         Returns:
             None.
@@ -408,6 +444,7 @@ class DataDownloadApplication:
         """
         self.root = root
         self.last = last
+        self.full_history = full_history
 
     def run(self) -> None:
         """Runs all downloads in turn.
@@ -428,12 +465,15 @@ class DataDownloadApplication:
             self.last
         )
         IimaFactorsDownload(nse / 'iima', session).run()
-        CorporateActionsRefresh(nse / 'corporate_actions', session).run(
-            self.last.year, self.last
-        )
-        BhavcopyTopUp(nse / 'bhavcopy_raw' / '2026', session).run(
-            datetime.date(2026, 10, 7), self.last
-        )
+        first_year = self.last.year
+        first_day = datetime.date(2026, 10, 7)
+        if self.full_history:
+            first_year = 1995
+            first_day = datetime.date(1995, 1, 2)
+        actions = CorporateActionsRefresh(nse / 'corporate_actions', session)
+        for year in range(first_year, self.last.year + 1):
+            actions.run(year, min(self.last, datetime.date(year, 12, 31)))
+        BhavcopyTopUp(nse / 'bhavcopy_raw', session).run(first_day, self.last)
         MarketCapDownload(nse / 'market_cap', session).run(
             datetime.date(2024, 2, 1), self.last
         )
@@ -444,4 +484,5 @@ if __name__ == '__main__':
     DataDownloadApplication(
         pathlib.Path(sys.argv[1]),
         datetime.date.fromisoformat(sys.argv[2]),
+        full_history=len(sys.argv) > 3 and sys.argv[3] == 'full',
     ).run()

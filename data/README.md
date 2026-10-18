@@ -44,3 +44,7 @@ Used only to cross-check this study's adjusted prices from December 2019. UBI ca
 - **Delisted shares are in the bhavcopies.** Every share that traded appears while it traded, so there is no survivorship bias in prices; the corporate-action list is complete only from 2005.
 - **Raw files are unadjusted;** NSE does not adjust PREVCLOSE either. The Build stage applies the corporate actions.
 - **No bhavcopy for 430 listed dates** in the earlier study's `not_available.txt` (holidays and some missing archive days); the Build stage checks them against the index and UBI calendars.
+
+## Rebuilding without the earlier study's files
+
+`python -m jegadeesh_titman_india.data.downloads data 2026-10-16 full` fetches every bhavcopy from 1995-01-02 (old layout up to 2024-07-05, UDiFF after) into `nse/bhavcopy_raw/{year}/` and every year of corporate actions into `nse/corporate_actions/`, plus the index, IIMA, market-cap and results files. It takes about an hour and skips files already on disk. Files fetched for 2010-03-02 and 2010-03-03 and for 2024-07-05 to 2024-07-09 had the same contents as the earlier study's copies.

@@ -288,7 +288,38 @@ class SummaryWriter:
             f'risk-free rate is {pct(long_only["alpha_monthly"])} a month, '
             f'about {pct(long_only["alpha_monthly"] * 12, 1)} a year, but its '
             f't-statistic is only {num(long_only["alpha_t"], 1)} '
-            f'(months to December 2025).\n'
+            f'(months to December 2025). {self.relative_wealth()}\n'
+        )
+
+    def relative_wealth(self) -> str:
+        """Describes when the long-only portfolio pulled ahead of the index.
+
+        Args:
+            None.
+
+        Returns:
+            One or two sentences, or an empty string without the file.
+
+        Raises:
+            None.
+        """
+        path = self.results / 'wealth_by_year.csv'
+        if not path.exists():
+            return ''
+        table = pd.read_csv(path).set_index('year')
+        ratio = table['winners_long_only'] / table['nifty500_tri']
+        behind = ratio[ratio < 1.0]
+        if len(behind) == 0:
+            return ''
+        first_behind = int(behind.index.min())
+        last_behind = int(behind.index.max())
+        return (
+            f'It was not a smooth lead: at each year end from '
+            f'{first_behind} to {last_behind} the winners portfolio was '
+            f'behind the index (relative value {ratio.loc[last_behind]:.2f} '
+            f'at the end of {last_behind}), and it reached '
+            f'{ratio.iloc[-1]:.2f} at the end of {int(ratio.index[-1])}. '
+            f'Almost all of the excess return came after {last_behind}.'
         )
 
     def caveats(self) -> str:

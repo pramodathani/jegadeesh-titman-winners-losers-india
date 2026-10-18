@@ -24,7 +24,7 @@ The NIFTY 500 total return index compounded at 11.4% a year over the same months
 6. **The effect was weak in 2007-2011** (ordinary t 0.9 in A and 0.8 in B, including the 2009 momentum crash) and stronger later (Table VI).
 7. **No long-run reversal in the main sample.** The cumulative spread is 13.5% (A) and 13.0% (B) after 12 months and 14.4% and 22.4% after 36, where the paper loses about half. The 1997-2006 sample for universe A does reverse (Table VII below).
 8. **Announcement returns follow the paper's shape:** winners beat losers around results in the first months after ranking and lose to them in months 8 to 20 (Table IX).
-9. **A long-only investor could have held it.** Winners decile, universe B, 6/6: 18.2% a year after costs against 11.4% for the NIFTY 500 total return, with a beta of 1.13 and a worst drawdown of -73%. The alpha over the risk-free rate is 0.45% a month, about 5.4% a year, but its t-statistic is only 1.8 (months to December 2025).
+9. **A long-only investor could have held it.** Winners decile, universe B, 6/6: 18.2% a year after costs against 11.4% for the NIFTY 500 total return, with a beta of 1.13 and a worst drawdown of -73%. The alpha over the risk-free rate is 0.45% a month, about 5.4% a year, but its t-statistic is only 1.8 (months to December 2025). It was not a smooth lead: at each year end from 2008 to 2013 the winners portfolio was behind the index (relative value 0.78 at the end of 2013), and it reached 2.48 at the end of 2025. Almost all of the excess return came after 2013.
 
 
 ## Caveats
