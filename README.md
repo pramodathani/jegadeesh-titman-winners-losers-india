@@ -23,7 +23,7 @@ The NIFTY 500 total return compounded at 11.4% a year over the same months. The 
 
 ## What the Indian data says
 
-1. **Momentum is strong.** All 64 long-short strategies (32 per universe) are positive before and after costs. The paper's 6/6 strategy earns 1.49% a month (A) and 1.48% (B); the paper found 0.95%. Skipping a week raises returns, as in the paper.
+1. **Momentum is strong.** All 64 long-short strategies (32 per universe) are positive before and after costs. The paper's 6/6 strategy earns 1.49% a month (A) and 1.48% (B); the paper found 0.95%. Leaving a week between ranking and holding raises returns when the week is the first after a month-end ranking, as in the paper, but not when the ranking window is ended a week early instead ([`results/comparison.md`](results/comparison.md)).
 2. **Costs take 20% (A) and 10% (B) of the long-short return,** which stays positive after costs (Newey-West t 2.7 and 2.8).
 3. **The profit is not market risk:** the winners-minus-losers beta is negative (-0.38 and -0.49), as in the paper.
 4. **The winners carry the signal,** as in the paper: the loser leg is not significantly different from zero.
@@ -58,6 +58,8 @@ The approved plan is in [`plan/india_plan.md`](plan/india_plan.md).
 NSE daily bhavcopies from 1995 (including delisted shares), NSE corporate actions, the NIFTY 500 total return index, the IIMA four-factor library (risk-free rate and momentum factor for cross-checking), NSE market-cap files (2024 onward) and NSE results filings. UBI through tradingmachine supplied prices from December 2019 as a cross-check only: 98.7% of 2.9 million overlapping daily returns agree within 0.5%. Raw data is git-ignored and never published; see [`data/README.md`](data/README.md) for sources and counts. NSE's corporate action list and bhavcopies are not adjusted or complete in all years, as set out below.
 
 ## Detailed results
+
+[`results/comparison.md`](results/comparison.md) sets this study beside an earlier study of the same paper made with Claude Code: the 32 long-short spreads agree to within 0.1 to 0.2 points a month (cell correlations 0.98 to 0.998), and the one visible difference, the effect of the skipped week, comes from where the gap falls in the calendar month.
 
 [`results/summary.md`](results/summary.md) holds Table I with the paper's numbers beside India's, Tables II to IX, the headline strategies with cost sensitivity, robustness checks and the delisting stress. The CSV files in `results/` hold every number, including the net-of-cost columns and drawdowns for all 64 strategies (`table_one.csv`).
 

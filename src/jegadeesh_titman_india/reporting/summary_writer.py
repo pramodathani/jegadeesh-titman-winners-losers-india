@@ -238,7 +238,7 @@ class SummaryWriter:
             f'in universe A (ordinary t {num(pick["A"]["bs_t_ols"], 1)}) and '
             f'{pct(pick["B"]["bs_mean"])} in universe B (t '
             f"{num(pick['B']['bs_t_ols'], 1)}), against the paper's 0.95% "
-            f'(t 3.07). Skipping a week raises returns, as in the paper.\n'
+            f'(t 3.07). Leaving a week between ranking and holding raises returns, as in the paper, when the week is the first week after a month-end ranking; ending the ranking window a week early instead leaves them almost unchanged (see `comparison.md`).\n'
             f'2. **Costs take {pct(1 - pick["A"]["bs_net_mean"] / pick["A"]["bs_mean"], 0)} '
             f'of the long-short return in universe A and '
             f'{pct(1 - pick["B"]["bs_net_mean"] / pick["B"]["bs_mean"], 0)} in '

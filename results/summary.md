@@ -16,7 +16,7 @@ The NIFTY 500 total return index compounded at 11.4% a year over the same months
 
 ## What the Indian data says
 
-1. **Momentum is strong in Indian shares.** All 64 long-short strategies earn a positive mean before and after costs. The 6/6 strategy with no skip earns 1.49% a month in universe A (ordinary t 3.6) and 1.48% in universe B (t 3.2), against the paper's 0.95% (t 3.07). Skipping a week raises returns, as in the paper.
+1. **Momentum is strong in Indian shares.** All 64 long-short strategies earn a positive mean before and after costs. The 6/6 strategy with no skip earns 1.49% a month in universe A (ordinary t 3.6) and 1.48% in universe B (t 3.2), against the paper's 0.95% (t 3.07). Leaving a week between ranking and holding raises returns, as in the paper, when the week is the first week after a month-end ranking; ending the ranking window a week early instead leaves them almost unchanged (see `comparison.md`).
 2. **Costs take 20% of the long-short return in universe A and 10% in universe B, not all of it.** After brahmagupta's delivery costs the 6/6 spread is 1.19% (A) and 1.33% (B) a month, with Newey-West t of 2.7 and 2.8. Turnover is high, 0.71 of the book a month, and drawdowns are deep.
 3. **The profit is not market risk.** The spread's beta is -0.38 (A) and -0.49 (B), negative as in the paper (-0.08), so alphas are larger than raw returns.
 4. **The winners carry the signal, as in the paper.** Winners earn 1.79% a month in universe B (t 3.5) and losers 0.32% (t 0.4); the loser leg is not significantly different from zero, matching the paper, where the abnormal return comes from the buy side.
