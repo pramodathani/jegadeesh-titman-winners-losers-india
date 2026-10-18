@@ -33,7 +33,7 @@ Status: proposed for approval at the Adapt-to-India gate, 2026-10-18.
 
 UBI comes first by house rule. It cannot give this study's history, delisted shares or dividends (gaps 1, 2 and 7). So UBI is used only to **cross-check** our split- and bonus-adjusted prices for Dec 2019 onward, through `export_prices`, keeping gap 24 (the Feb-Mar 2022 hole) in mind.
 
-Files read **read-only** from the earlier study, `/home/pramod/Projects/research/jstor/jegadeesh_and_titman/data/`, as the persona allows. I will not read that study's code, tests, results, README or site, so the parsing and adjustment code here is written fresh. The nse-market-data skill suggests copying its bhavcopy code; that is set aside for the sake of the comparison.
+Files read **read-only** from the earlier study, its `data/` folder, as the persona allows. I will not read that study's code, tests, results, README or site, so the parsing and adjustment code here is written fresh. The nse-market-data skill suggests copying its bhavcopy code; that is set aside for the sake of the comparison.
 
 | File | Use |
 |---|---|

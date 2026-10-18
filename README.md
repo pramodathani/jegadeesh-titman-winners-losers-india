@@ -1,5 +1,7 @@
 # Returns to Buying Winners and Selling Losers in India
 
+Pramod Athani, Independent researcher · [pramod.athani@gmail.com](mailto:pramod.athani@gmail.com) · ORCID [0009-0002-0270-7045](https://orcid.org/0009-0002-0270-7045) · SSRN [13497529](https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=13497529) · [LinkedIn](https://www.linkedin.com/in/pramod-athani-b65b922a/)
+
 A replication of Jegadeesh and Titman (1993) for Indian shares on NSE: all 32 J/K momentum strategies of their Table I, the paper's other tables where Indian data allows, and long-only versions an Indian investor could hold, measured after Indian trading costs against the NIFTY 500 total return. Two universes are used: every NSE share that traded (universe A, as the paper does) and the 500 most traded (universe B, which an investor could actually hold). The main sample is holding months January 2007 to September 2026.
 
 **In one line:** buying past winners beat selling past losers in all 64 strategy runs, 1.5% a month for the paper's 6-month/6-month strategy (the paper: 0.95%), and a long-only portfolio of the winners returned 18.2% a year after costs against 11.4% for the NIFTY 500 total return; but the long-short portfolio cannot be held in India, the long-only lead came almost entirely after 2013, and the long-only portfolio fell 73% in 2008.
@@ -116,6 +118,14 @@ results/                               tables as CSV, summary.md, figures
 paper/  plan/  data/                   source notes, approved plan, git-ignored data
 .claude/notes/                         the reasoning behind each source file
 ```
+
+## Declarations
+
+**Use of AI.** The study was carried out by an AI research analyst (research-agent, built on Anthropic's Claude) working under the author's direction: it read the paper, wrote and tested the code, ran the backtests and drafted the text. The author set the research plan, approved each stage and is responsible for the content.
+
+**Conflicts of interest.** The author may hold positions in the strategies and shares discussed. These are historical backtests, not forecasts, and nothing here is investment advice.
+
+**Funding.** None.
 
 ## Citation
 
