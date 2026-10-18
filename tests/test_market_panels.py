@@ -97,3 +97,24 @@ class TestMarketPanels:
         assert flags.loc[pd.Period('2020-02'), 'C']
         assert not flags.loc[pd.Period('2020-03'), 'C']
         assert flags.loc[pd.Period('2020-03'), 'A']
+
+    def test_earlier_month_ends_before_the_month_end(self) -> None:
+        """Checks that each month ends one session before its last session.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+
+        Raises:
+            AssertionError: When the earlier returns are wrong.
+        """
+        earlier = self._panels().earlier_returns()
+        january = 1.01 * 1.02 - 1.0
+        february = 1.03 * 1.04 * 1.05 - 1.0
+        march = 1.06 * 1.07 * 1.08 - 1.0
+        assert math.isclose(earlier.loc[pd.Period('2020-01'), 'A'], january)
+        assert math.isclose(earlier.loc[pd.Period('2020-02'), 'A'], february)
+        assert math.isclose(earlier.loc[pd.Period('2020-03'), 'A'], march)
+        assert pd.Period('2020-04') not in earlier.index

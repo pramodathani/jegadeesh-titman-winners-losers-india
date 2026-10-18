@@ -144,3 +144,33 @@ class MarketPanels:
         grouped.index = pd.PeriodIndex(grouped.index, freq='M')
         grouped = grouped[grouped.index <= self.last_month]
         return np.expm1(grouped)
+
+    def earlier_returns(self) -> pd.DataFrame:
+        """Compounds daily returns over months that end before the month end.
+
+        The month labelled m ends skip_sessions sessions before the last
+        session of month m. Ranking on these months makes the ranking window
+        end a week before the portfolio is formed at the month end, which is
+        the other way of leaving a gap between ranking and holding.
+
+        Args:
+            None.
+
+        Returns:
+            Returns, months by shares, NaN where a share had no return.
+
+        Raises:
+            None.
+        """
+        positions = self.month_end_positions()
+        boundaries = positions.to_numpy() - self.skip_sessions
+        months = positions.index
+        session_positions = np.arange(len(self.sessions))
+        labels = np.searchsorted(boundaries, session_positions, side='left')
+        valid = labels < len(months)
+        label_months = months[labels[valid]]
+        logs = np.log1p(self.daily_returns.iloc[np.flatnonzero(valid)])
+        grouped = logs.groupby(np.asarray(label_months)).sum(min_count=1)
+        grouped.index = pd.PeriodIndex(grouped.index, freq='M')
+        grouped = grouped[grouped.index <= self.last_month]
+        return np.expm1(grouped)

@@ -21,6 +21,7 @@ class StudyInputs:
     Attributes:
         standard_returns: Calendar month returns, months by shares.
         shifted_returns: Returns of months that start after the skip.
+        earlier_returns: Returns of months that end before the month end.
         universe_a: Bools, months by shares, for universe A.
         universe_b: Bools, months by shares, for universe B.
         median_values: Median daily traded value, months by shares.
@@ -34,6 +35,7 @@ class StudyInputs:
     NAMES: tuple[str, ...] = (
         'standard_returns',
         'shifted_returns',
+        'earlier_returns',
         'universe_a',
         'universe_b',
         'median_values',
@@ -78,6 +80,10 @@ class StudyInputs:
             index=standard.index,
             columns=standard.columns,
         )
+        earlier = panels.earlier_returns().reindex(
+            index=standard.index,
+            columns=standard.columns,
+        )
         builder = UniverseBuilder(panels)
         universe_a = builder.universe_a(standard)
         medians, shares = builder.liquidity()
@@ -94,6 +100,7 @@ class StudyInputs:
         tables = {
             'standard_returns': standard,
             'shifted_returns': shifted,
+            'earlier_returns': earlier,
             'universe_a': universe_a,
             'universe_b': universe_b,
             'median_values': medians,
