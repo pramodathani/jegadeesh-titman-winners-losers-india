@@ -59,6 +59,7 @@ class TestBhavcopyReader:
         assert table['close'].iloc[0] == 11
         assert table['series'].iloc[0] == 'EQ'
         assert table['date'].iloc[0] == pd.Timestamp('1995-01-02')
+        assert not table['has_isin'].iloc[0]
 
     def test_udiff_layout_keeps_shares_only(
         self,
@@ -76,12 +77,15 @@ class TestBhavcopyReader:
             AssertionError: When the table is wrong.
         """
         text = (
-            'TradDt,FinInstrmTp,TckrSymb,SctySrs,ClsPric,TtlTrfVal\n'
-            '2026-10-06,STK,AAA,EQ,100,5000\n'
-            '2026-10-06,GOVT,SGB,GB,6000,9000\n'
-            '2026-10-06,STK,BBB,BZ,20,400\n'
+            'TradDt,FinInstrmTp,TckrSymb,SctySrs,ClsPric,TtlTrfVal,ISIN\n'
+            '2026-10-06,STK,AAA,EQ,100,5000,INE000A01010\n'
+            '2026-10-06,GOVT,SGB,GB,6000,9000,IN0020200104\n'
+            '2026-10-06,STK,BBB,BZ,20,400,INF204KB17I5\n'
         )
         path = self._zip(tmp_path, '2026-10-06.csv.zip', text)
         table = BhavcopyReader().read(path)
         assert sorted(table['symbol']) == ['AAA', 'BBB']
-        assert table.set_index('symbol').loc['BBB', 'traded_value'] == 400
+        by_symbol = table.set_index('symbol')
+        assert by_symbol.loc['BBB', 'traded_value'] == 400
+        assert by_symbol.loc['BBB', 'is_fund']
+        assert not by_symbol.loc['AAA', 'is_fund']

@@ -21,6 +21,8 @@ class BhavcopyReader:
         'series',
         'close',
         'traded_value',
+        'is_fund',
+        'has_isin',
     )
 
     def __init__(self) -> None:
@@ -48,8 +50,9 @@ class BhavcopyReader:
             path: A file named like 2024-07-05.csv.zip.
 
         Returns:
-            A table with columns date, symbol, series, close and
-            traded_value, one row per share, preferring the EQ series.
+            A table with columns date, symbol, series, close, traded_value,
+            is_fund and has_isin, one row per share, preferring the EQ
+            series.
 
         Raises:
             ValueError: When the file has neither known layout.
@@ -70,21 +73,35 @@ class BhavcopyReader:
     def _from_old_layout(self, table: pd.DataFrame) -> pd.DataFrame:
         """Renames the columns of the layout used until July 2024.
 
+        Fund units, such as exchange traded funds, have ISINs starting INF.
+
         Args:
             table: The raw table.
 
         Returns:
-            A table with symbol, series, close and traded_value.
+            A table with symbol, series, close, traded_value, is_fund and
+            has_isin.
 
         Raises:
             None.
         """
+        isin = (
+            table['ISIN']
+            if 'ISIN' in table.columns
+            else pd.Series(
+                None,
+                index=table.index,
+                dtype='object',
+            )
+        )
         return pd.DataFrame(
             {
                 'symbol': table['SYMBOL'].str.strip(),
                 'series': table['SERIES'].str.strip(),
                 'close': table['CLOSE'],
                 'traded_value': table['TOTTRDVAL'],
+                'is_fund': isin.astype(str).str.startswith('INF'),
+                'has_isin': isin.notna(),
             }
         )
 
@@ -95,8 +112,8 @@ class BhavcopyReader:
             table: The raw table.
 
         Returns:
-            A table with symbol, series, close and traded_value, keeping
-            only shares.
+            A table with symbol, series, close, traded_value, is_fund and
+            has_isin, keeping only shares.
 
         Raises:
             None.
@@ -108,6 +125,8 @@ class BhavcopyReader:
                 'series': shares['SctySrs'].str.strip(),
                 'close': shares['ClsPric'],
                 'traded_value': shares['TtlTrfVal'],
+                'is_fund': shares['ISIN'].astype(str).str.startswith('INF'),
+                'has_isin': shares['ISIN'].notna(),
             }
         )
 
