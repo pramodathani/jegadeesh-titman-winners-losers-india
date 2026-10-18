@@ -6,7 +6,16 @@ A replication of Jegadeesh and Titman (1993) for Indian shares on NSE: all 32 J/
 
 ![Value of one rupee invested in January 2007, after costs](results/figures/wealth.png)
 
-*The interactive companion page is built at a later stage of this study.*
+## Interactive companion
+
+A static, paper-styled page (Apache ECharts, no server) lets you choose any of the 64 portfolios and see its growth, drawdowns and monthly calendar against the NIFTY 500 total return, all 32 strategies beside the paper's Table I, the paper's other tables, and the cost, robustness and delisting checks. Every view has a link, for example `#a-j12-k3-skip`. It lives in `src/jegadeesh_titman_india/site/` and is published to GitHub Pages only after approval. To run it on your own computer:
+
+```
+pip install -e ".[plots]"
+jt-momentum-app
+```
+
+`.venv/bin/python -I -m jegadeesh_titman_india.scripts.build_snapshot .` rebuilds the page's data from the results; it contains derived results only, never raw exchange data.
 
 ## Headline results
 
@@ -88,6 +97,7 @@ python3.14 -m venv .venv
 .venv/bin/python -I -m jegadeesh_titman_india.scripts.run_all_tables data results
 .venv/bin/python -I -m jegadeesh_titman_india.scripts.draw_chart data results/figures/wealth.png
 .venv/bin/python -I -m jegadeesh_titman_india.scripts.write_summary results paper
+.venv/bin/python -I -m jegadeesh_titman_india.scripts.build_snapshot .
 .venv/bin/pytest
 ```
 
@@ -98,7 +108,8 @@ The downloads take about an hour; the rest runs in about fifteen minutes. The pa
 ```
 src/jegadeesh_titman_india/data/       downloading and parsing NSE data, daily returns
 src/jegadeesh_titman_india/momentum/   universes, ranking, cohorts, the tables
-src/jegadeesh_titman_india/reporting/  summary and chart
+src/jegadeesh_titman_india/reporting/  summary, chart and the page's data snapshot
+src/jegadeesh_titman_india/site/       the companion page (HTML, CSS, JavaScript, data)
 src/jegadeesh_titman_india/scripts/    one program per step
 tests/                                 offline tests on small made-up data
 results/                               tables as CSV, summary.md, figures

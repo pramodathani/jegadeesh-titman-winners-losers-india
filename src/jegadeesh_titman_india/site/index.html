@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Returns to Buying Winners and Selling Losers in India</title>
+<meta name="description" content="An interactive companion to a replication of Jegadeesh and Titman (1993) on NSE shares, 2007 to 2026: all 32 J/K strategies, the paper's other tables, and long-only portfolios after Indian trading costs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+</head>
+<body>
+<main>
+
+<header class="paper-head">
+  <h1>Returns to Buying Winners and Selling Losers in India: A Replication of Jegadeesh and Titman (1993) on NSE Shares, 2007–2026</h1>
+  <p class="authors">Pramod Athani</p>
+  <p class="contact"><a href="mailto:pramod.athani@gmail.com">pramod.athani@gmail.com</a> · ORCID <a href="https://orcid.org/0009-0002-0270-7045">0009-0002-0270-7045</a> · SSRN <a href="https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=13497529">13497529</a> · <a href="https://www.linkedin.com/in/pramod-athani-b65b922a/">LinkedIn</a></p>
+  <p class="affiliation">An interactive companion to the replication · <a href="https://github.com/pramodathani/jegadeesh-titman-momentum-india">code and results on GitHub</a></p>
+  <p class="dateline">Data through <span id="data-through">…</span> · snapshot built <span id="generated">…</span></p>
+</header>
+
+<section class="abstract">
+  <h2>Abstract</h2>
+  <p>We rebuild the 32 relative-strength strategies of Jegadeesh and Titman (1993) on shares traded on India's National Stock Exchange, for the 237 holding months from January 2007 to September 2026, and report the paper's other tests where Indian data allow. Buying the top past-return decile and selling the bottom decile earns a positive return in all 64 strategy runs (32 strategies on each of two universes), about 1.5% a month for the paper's six-month ranking and six-month holding strategy against 0.95% in the original US sample, and it remains positive after Indian trading costs. Cash shares cannot be shorted overnight in India, so we also hold the winners decile alone: among the 500 most traded shares it compounded at <span id="abstract-return">…</span> a year after costs against <span id="abstract-benchmark">…</span> for the NIFTY 500 total return, but it fell <span id="abstract-drawdown">…</span> from its peak in the 2008 crash, and its lead over the index came almost entirely after 2013. As in the paper, the profit is not explained by market risk and comes mainly from the winners; unlike the paper, there is no January loss and no reversal after the first year in the main sample. This page lets the reader choose any of the 64 portfolios and examine its returns, risk and place among the others.</p>
+  <p class="keywords"><b>Keywords:</b> momentum, relative strength, market efficiency, India, NSE, replication. <b>JEL:</b> G11, G12, G14.</p>
+</section>
+
+<div class="citation-box">
+  <div class="label">Suggested citation</div>
+  <p id="citation-text">Athani, P. (2026). <i>Returns to Buying Winners and Selling Losers in India: A Replication of Jegadeesh and Titman (1993) on NSE Shares, 2007–2026</i> (Version 0.1) [Interactive paper and software]. https://pramodathani.github.io/jegadeesh-titman-momentum-india/</p>
+  <button class="button" id="copy-citation">Copy</button>
+</div>
+
+<div class="specification" id="specification">
+  <div class="label">Portfolio specification</div>
+  <div class="controls">
+    <label>Ranking period <i>J</i>
+      <select id="control-ranking"></select>
+    </label>
+    <label>Holding period <i>K</i>
+      <select id="control-holding"></select>
+    </label>
+    <label>Gap
+      <select id="control-gap">
+        <option value="noskip">none</option>
+        <option value="skip">one week</option>
+      </select>
+    </label>
+    <label>Universe
+      <select id="control-universe">
+        <option value="B">500 most traded</option>
+        <option value="A">all NSE shares</option>
+      </select>
+    </label>
+  </div>
+  <div class="summary" id="specification-summary">Loading data…</div>
+</div>
+
+<h2 class="section">1. Introduction</h2>
+<p>Jegadeesh and Titman (1993) showed that US stocks with the highest returns over the past three to twelve months kept outperforming those with the lowest over the following three to twelve months. Their strategy ranks stocks each month on their past <i>J</i>-month return, forms ten equally weighted deciles, buys the top decile and sells the bottom decile, and holds each position for <i>K</i> months, so that <i>K</i> overlapping positions are held at once, each with 1/<i>K</i> of the capital. A second set of strategies waits one week between ranking and buying. Over 1965–1989 all 32 strategies earned positive returns, about 1% a month.</p>
+<p>This page applies the same construction to Indian shares. The specification above chooses one of the 64 portfolios (32 strategies on each of two universes); every figure and table in Sections 2 and 3 responds to it. "The portfolio" below means the winners decile alone, equally weighted within each monthly cohort and rebalanced monthly; "the paper portfolio" means winners minus losers, which cannot be held by most investors in India. Both are measured after Indian delivery costs: securities transaction tax, stamp duty, exchange and regulatory charges and GST, plus an assumed market impact of 0.1% a side for the 500 most traded shares and 0.3% for all shares.</p>
+
+<h2 class="section" id="sec-performance">2. The selected portfolio</h2>
+<figure>
+  <div class="chart" id="figure-growth"></div>
+  <figcaption><b>Figure 1.</b> Growth of ₹1 invested in January 2007, after costs, on a logarithmic scale: the winners decile (the portfolio), the winners-minus-losers paper portfolio and the NIFTY 500 total return index.</figcaption>
+</figure>
+<div class="table-wrap">
+  <table id="table-summary"></table>
+</div>
+<figure>
+  <div class="chart short" id="figure-drawdown"></div>
+  <figcaption><b>Figure 2.</b> Drawdown: the percentage below the previous peak value, for the portfolio and the index.</figcaption>
+</figure>
+<figure>
+  <div class="chart tall" id="figure-calendar"></div>
+  <figcaption><b>Figure 3.</b> Monthly return of the portfolio minus the NIFTY 500, by year and calendar month. India's financial year ends on 31 March, the counterpart of the US year end that Jegadeesh and Titman linked to their January losses.</figcaption>
+</figure>
+<figure>
+  <div class="chart short" id="figure-rolling"></div>
+  <figcaption><b>Figure 4.</b> Rolling 36-month compound annual return of the portfolio minus that of the NIFTY 500.</figcaption>
+</figure>
+
+<h2 class="section" id="sec-table-one">3. The 32 strategies and the paper's Table I</h2>
+<p>Table 1 sets the Indian buy-minus-sell returns beside the paper's for the selected universe and gap. Each cell gives the mean monthly return before costs with its ordinary <i>t</i>-statistic, the form the paper reports, and the paper's value underneath. The selected strategy is shaded.</p>
+<div class="table-wrap">
+  <table id="table-one"></table>
+</div>
+<div class="table-wrap">
+  <table id="table-one-net"></table>
+</div>
+<div class="two-column">
+  <figure>
+    <div class="chart" id="figure-heatmap"></div>
+    <figcaption><b>Figure 5.</b> Compound annual return of the winners decile above the NIFTY 500 total return, after costs, by <i>J</i> and <i>K</i>, for the selected universe and gap.</figcaption>
+  </figure>
+  <figure>
+    <div class="chart" id="figure-scatter"></div>
+    <figcaption><b>Figure 6.</b> Compound annual return against maximum drawdown of the winners decile for all 64 portfolios. The selected portfolio is ringed.</figcaption>
+  </figure>
+</div>
+<p id="skip-note" class="table-note"></p>
+
+<h2 class="section" id="sec-other">4. The paper's other tests</h2>
+<h3 class="subsection" id="sec-risk">4.1 Risk: betas of the deciles (Table II)</h3>
+<figure>
+  <div class="chart short" id="figure-beta"></div>
+  <figcaption><b>Figure 7.</b> Beta of each six-month/six-month decile portfolio against the NIFTY 500 total return (India, selected universe) and against the value-weighted index (the paper, page 73). Decile 1 holds the past losers and decile 10 the past winners.</figcaption>
+</figure>
+<div class="table-wrap">
+  <table id="table-beta"></table>
+</div>
+<h3 class="subsection">4.2 Size and beta subsamples (Table III)</h3>
+<div class="table-wrap">
+  <table id="table-subsamples"></table>
+</div>
+<h3 class="subsection" id="sec-calendar">4.3 Calendar months and subperiods (Tables IV–VI)</h3>
+<figure>
+  <div class="chart" id="figure-calendar-months"></div>
+  <figcaption><b>Figure 8.</b> Average monthly return of the six-month/six-month winners-minus-losers portfolio by calendar month, before costs. The paper finds a large January loss; Indian returns are strongest in March, July and October.</figcaption>
+</figure>
+<div class="table-wrap">
+  <table id="table-subperiods"></table>
+</div>
+<h3 class="subsection" id="sec-event">4.4 Returns in event time (Tables VII and VIII)</h3>
+<figure>
+  <div class="chart" id="figure-event"></div>
+  <figcaption><b>Figure 9.</b> Cumulative winners-minus-losers return in the 36 months after ranking on six-month returns. Main sample: formation months December 2006 to September 2023. Early sample: 1997–2006, a loose stand-in for the paper's pre-1965 back-test, with less reliable corporate action data.</figcaption>
+</figure>
+<h3 class="subsection">4.5 Where the profits come from (Section III)</h3>
+<div class="table-wrap">
+  <table id="table-section-three"></table>
+</div>
+<h3 class="subsection" id="sec-earnings">4.6 Around earnings announcements (Table IX)</h3>
+<figure>
+  <div class="chart" id="figure-earnings"></div>
+  <figcaption><b>Figure 10.</b> Three-day return around quarterly results of winners minus losers, by months since ranking on six-month returns. India: NSE results filings, August 2007 to March 2025. Paper: Table IX, 1980–1989.</figcaption>
+</figure>
+
+<h2 class="section" id="sec-costs">5. Costs, robustness and the long-only portfolio</h2>
+<div class="table-wrap">
+  <table id="table-headline"></table>
+</div>
+<div class="table-wrap">
+  <table id="table-robustness"></table>
+</div>
+<div class="table-wrap">
+  <table id="table-delisting"></table>
+</div>
+<figure>
+  <div class="chart short" id="figure-wealth"></div>
+  <figcaption><b>Figure 11.</b> Value of the headline winners portfolio relative to the NIFTY 500 total return at each year end (above 1 means ahead). The portfolio was behind the index at each year end from 2008 to 2013.</figcaption>
+</figure>
+
+<h2 class="section" id="sec-comparison">6. Comparison with an earlier study</h2>
+<p>An earlier study of the same paper, made with Claude Code on the same NSE files, was set beside this one only after these results were final. The 32 long-short spreads agree to within 0.02 to 0.14 percentage points a month on average, with correlations of 0.98 to 0.998 across the 16 cells of each panel, and both find the same best long-only strategy (nine-month ranking, three-month holding). The one visible difference is the effect of the skipped week: it depends on where the gap falls in the calendar month. This study ranks at month ends and starts holding five sessions later; the earlier study ends the ranking window five sessions before the month end. With the second method this study's numbers agree with theirs. The full comparison is in the repository.</p>
+
+<h2 class="section" id="sec-data">7. Data, methods and caveats</h2>
+<p>Share prices come from the National Stock Exchange's daily bhavcopy files from 1995, including shares later delisted. NSE does not adjust the previous close on an ex-date, so returns are adjusted with NSE's own list of splits, bonuses, consolidations and dividends, which is reliable from 2005; daily returns below −50% or above +100% are treated as data errors and set to zero. Exchange traded funds and similar units are removed. A share is ranked in a month only if it has a return in each of the previous <i>J</i> months and traded in the last five sessions of the month. Universe A is every such share; universe B keeps the 500 with the highest median daily traded value over the previous 250 sessions that traded on at least 80% of them. The benchmark is the NIFTY 500 total return index. Alphas use the Indian 91-day Treasury bill return from the IIMA data library, available to December 2025.</p>
+<p>The caveats matter. The winners-minus-losers portfolio cannot be held by most investors, and no borrowing cost is charged. Costs are 2026 rates applied to the whole sample, and market impact is assumed. Nothing is charged after a delisted share's last trade, and if every exiting winner lost 100% the six-month/six-month spread would be roughly 1.1% to 1.2% a month before costs. NSE's corporate action list is incomplete, so some bonuses are missing. Universe A includes penny stocks, mainly in the late 1990s. Size is proxied by traded value. The effect was weak in 2007–2011, and the evidence is strongest after 2011. With 64 strategies tested, a single one needs a <i>t</i>-statistic near 3.4 to rule out chance on a Bonferroni basis; 20 of the 64 pass on Newey–West <i>t</i>-statistics, although the strategies are highly correlated. The headline strategy, six-month ranking and six-month holding without a gap, was fixed in the approved plan before any result was seen. An independent reviewer reproduced the headline numbers and found no look-ahead.</p>
+
+<h2 class="section">Declarations</h2>
+<p><b>Conflicts of interest.</b> The author may hold, or may in future hold, positions in the strategies and shares discussed here. The results are historical backtests, not forecasts, and nothing on this page is investment advice. The author has no other conflicts of interest to declare.</p>
+<p><b>Data and code availability.</b> All code and the study's tables are openly available at <a href="https://github.com/pramodathani/jegadeesh-titman-momentum-india">github.com/pramodathani/jegadeesh-titman-momentum-india</a> under the MIT licence. Share prices, corporate actions and index levels come from the public archives of the National Stock Exchange of India; they are not redistributed, and the repository's scripts download them.</p>
+<p><b>Funding.</b> This research received no external funding.</p>
+
+<h2 class="section">References</h2>
+<ol class="references">
+  <li>Agarwalla, S. K., Jacob, J., and Varma, J. R. (2013). Four factor model in Indian equities market. Indian Institute of Management Ahmedabad Working Paper 2013-09-05.</li>
+  <li>Jegadeesh, N., and Titman, S. (1993). Returns to buying winners and selling losers: Implications for stock market efficiency. <i>The Journal of Finance</i>, 48(1), 65–91. <a href="https://doi.org/10.1111/j.1540-6261.1993.tb04702.x">doi:10.1111/j.1540-6261.1993.tb04702.x</a></li>
+  <li>Jegadeesh, N., and Titman, S. (2001). Profitability of momentum strategies: An evaluation of alternative explanations. <i>The Journal of Finance</i>, 56(2), 699–720.</li>
+  <li>National Stock Exchange of India. Daily bhavcopy, corporate actions and index archives. <a href="https://www.nseindia.com/all-reports">nseindia.com</a></li>
+  <li>Newey, W. K., and West, K. D. (1987). A simple, positive semi-definite, heteroskedasticity and autocorrelation consistent covariance matrix. <i>Econometrica</i>, 55(3), 703–708.</li>
+</ol>
+
+<p class="footnote">Charts use <a href="https://echarts.apache.org/">Apache ECharts</a>. This page reads only precomputed results shipped with the repository; no NSE prices are redistributed. Licensed under the MIT licence.</p>
+
+</main>
+<script src="app.js"></script>
+</body>
+</html>

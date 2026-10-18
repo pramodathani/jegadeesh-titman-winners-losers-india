@@ -39,6 +39,9 @@ live = [
     "tradingmachine",
 ]
 
+[project.scripts]
+jt-momentum-app = "jegadeesh_titman_india.site_server:SiteServerApplication.launch"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/jegadeesh_titman_india"]
 
