@@ -1,0 +1,17 @@
+universe,quantity,value,t
+A,WRSS profit per dollar long per half-year,0.03777552789756865,1.480535448310875
+A,half-years in WRSS sample,39.0,
+A,correlation of WRSS with 6/6 decile strategy,0.8888120966607522,
+A,serial covariance of half-year equal-weight index,0.006282924997096338,
+A,average serial covariance of residuals,-0.007833502033886821,
+A,"lead-lag theta, all",-0.9996451845878145,-1.6256687308672881
+A,"lead-lag theta, first half",-1.0154163600469004,-1.614045921684413
+A,"lead-lag theta, second half",-1.4760934096455274,-1.4285498257885991
+B,WRSS profit per dollar long per half-year,0.05677114661855084,2.924908243998312
+B,half-years in WRSS sample,39.0,
+B,correlation of WRSS with 6/6 decile strategy,0.8588806317743269,
+B,serial covariance of half-year equal-weight index,0.0019040546795752447,
+B,average serial covariance of residuals,0.0019451815235982052,
+B,"lead-lag theta, all",-0.8915332674763827,-1.385143498779486
+B,"lead-lag theta, first half",-0.8661852666509846,-1.326835193510709
+B,"lead-lag theta, second half",-1.767614203628682,-1.3709924224299859
